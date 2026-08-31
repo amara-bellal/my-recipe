@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/pages/home.dart';
+import 'package:recipe/styles/themes.dart';
 
 void main() {
+  
   runApp(const MyApp());
 }
+
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,12 +19,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'وصفتي',
       
-      theme: null,
-      home: null,
-      routes: {
+      theme: lightmode,
+      
+      home: HomePage(),
 
+      routes: {
+        "/" : (context) => HomePage() ,
+        "/recipes" : (context) => HomePage() ,
+        "/recipes/add" : (context) => HomePage() ,
+        "/recipes/add/supplies" : (context) => HomePage() ,
+        "/recipes/add/methods" : (context) => HomePage() ,
       },
     );
   }
 }
+
+
 
