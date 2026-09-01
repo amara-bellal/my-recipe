@@ -4,6 +4,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:recipe/components/appbar.dart';
 
 class HomePage extends StatelessWidget{
 
@@ -13,7 +14,13 @@ class HomePage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBarWidget(
+        context: context,
+        title: "الصفحة الرئيسية" ,
+      ),
 
+      drawer: Drawer(),
     );
     
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/models/routes.dart';
 import 'package:recipe/pages/home.dart';
 import 'package:recipe/styles/themes.dart';
 
@@ -16,21 +17,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
-      title: 'وصفتي',
+      
+      debugShowCheckedModeBanner: false,
+
+      title: 'my recipe',
       
       theme: lightmode,
       
       home: HomePage(),
-
+      
       routes: {
-        "/" : (context) => HomePage() ,
-        "/recipes" : (context) => HomePage() ,
-        "/recipes/add" : (context) => HomePage() ,
-        "/recipes/add/supplies" : (context) => HomePage() ,
-        "/recipes/add/methods" : (context) => HomePage() ,
+        Routes.HOME.path          :   (context) => HomePage() ,
+        Routes.SETTINGS.path      :   (context) => HomePage() ,
+        Routes.SHOW_RECIPES.path  :   (context) => HomePage() ,
+        Routes.ADD_RECIPE.path    :   (context) => HomePage() ,
+        Routes.ADD_SUPPLIES.path  :   (context) => HomePage() ,
+        Routes.ADD_METHODS.path   :   (context) => HomePage() ,
       },
     );
+
   }
 }
 

@@ -6,6 +6,8 @@ ThemeData lightmode = ThemeData(
 
   primaryColor: Colors.white ,   // titles and icons's color
 
+  scaffoldBackgroundColor: Colors.grey[100],
+
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: Colors.red[600]
   ),
@@ -23,6 +25,8 @@ ThemeData lightmode = ThemeData(
     inverseSurface: const Color(0xFFF49292),
     onSurface: const Color(0xFFD32F2F) ,
   ),
+
+  fontFamily: "Rubik" ,
   
 );
 
