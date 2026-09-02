@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:recipe/models/routes.dart';
 import 'package:recipe/pages/home.dart';
 import 'package:recipe/styles/themes.dart';
 
-void main() {
+void main() async {
+
+  Hive.initFlutter();
+  
   
   runApp(const MyApp());
 }
@@ -29,12 +34,12 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
       
       routes: {
-        Routes.HOME.path          :   (context) => HomePage() ,
-        Routes.SETTINGS.path      :   (context) => HomePage() ,
-        Routes.SHOW_RECIPES.path  :   (context) => HomePage() ,
-        Routes.ADD_RECIPE.path    :   (context) => HomePage() ,
-        Routes.ADD_SUPPLIES.path  :   (context) => HomePage() ,
-        Routes.ADD_METHODS.path   :   (context) => HomePage() ,
+        RoutePages.HOME.path          :   (context) => HomePage() ,
+        RoutePages.SETTINGS.path      :   (context) => HomePage() ,
+        RoutePages.SHOW_RECIPES.path  :   (context) => HomePage() ,
+        RoutePages.ADD_RECIPE.path    :   (context) => HomePage() ,
+        RoutePages.ADD_SUPPLIES.path  :   (context) => HomePage() ,
+        RoutePages.ADD_STEPS.path   :   (context) => HomePage() ,
       },
     );
 

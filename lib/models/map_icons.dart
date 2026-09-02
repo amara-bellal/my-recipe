@@ -2,24 +2,22 @@
 import 'package:flutter/material.dart';
 import 'package:recipe/models/routes.dart';
 
-class IconInfo{
-   
-  IconData icon;
-  String pathTo;
-  
 
-  IconInfo({
-            required this.icon ,
-            this.pathTo = ""
-          });
+
+
+
+enum MapIcons{
+
+  MENU(icon: Icons.menu ) ,
+  HOME(icon: Icons.home_filled , route: RoutePages.HOME ) ,
+  SETTINGS(icon : Icons.settings , route: RoutePages.SETTINGS ) ;
 
   
+  final IconData icon  ;
+  final RoutePages? route ;
+
+  String get path => route!.path ;
+
+  const MapIcons({required this.icon , this.route});
 }
-
-
-final mapIcons = (
-  menu : IconInfo(icon: Icons.menu ) ,
-  home : IconInfo(icon: Icons.home_filled, pathTo: Routes.HOME.path ) ,
-  settings : IconInfo(icon: Icons.settings, pathTo: Routes.SETTINGS.path ) ,
-);
 

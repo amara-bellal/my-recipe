@@ -3,6 +3,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:recipe/models/routes.dart';
 
 
 
@@ -21,6 +22,8 @@ PreferredSizeWidget AppBarWidget({
 
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.surface,
+      elevation: 6.0,
+      shadowColor: Colors.black,
       centerTitle: true,
       title: Text(title , 
                   style: TextStyle(
@@ -34,7 +37,7 @@ PreferredSizeWidget AppBarWidget({
         [
           IconButton(
             onPressed: onRightIconPressed ?? (){
-              Navigator.pushNamed(context, "/settings");
+              Navigator.pushNamed(context, RoutePages.SETTINGS.path );
             }, 
             icon: Icon(rightIcon , color: Theme.of(context).primaryColor),
             hoverColor: Colors.blue,
