@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:recipe/models/routes.dart';
 import 'package:recipe/pages/home.dart';
 import 'package:recipe/styles/themes.dart';
@@ -18,7 +19,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+  
 
   @override
   Widget build(BuildContext context) {
