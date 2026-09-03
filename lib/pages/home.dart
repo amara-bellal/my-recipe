@@ -20,9 +20,9 @@ class HomePage extends StatelessWidget{
       appBar: AppBarWidget(
         context: context,
         title: "الصفحة الرئيسية" ,
+        hasRightIcon: true ,
       ),
 
-      drawer: Drawer(),
 
       body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 60),

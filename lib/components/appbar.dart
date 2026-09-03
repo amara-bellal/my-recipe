@@ -10,8 +10,8 @@ import 'package:recipe/models/routes.dart';
 
 
 PreferredSizeWidget AppBarWidget({ 
-                bool hasLeftIcon = true , 
-                IconData leftIcon = Icons.menu , 
+                bool hasLeftIcon = false , 
+                IconData leftIcon = Icons.arrow_back , 
                 bool hasRightIcon = true , 
                 IconData rightIcon = Icons.settings,
                 VoidCallback? onLeftIconPressed ,
@@ -49,7 +49,8 @@ PreferredSizeWidget AppBarWidget({
         builder: (context) {
           return IconButton(
                 onPressed: onLeftIconPressed ?? (){
-                  Scaffold.of(context).openDrawer();
+                  Navigator.pop(context);
+                  //Scaffold.of(context).openDrawer();
                 }, 
                 icon: Icon(leftIcon , color: Theme.of(context).primaryColor,),
               );

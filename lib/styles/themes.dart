@@ -14,11 +14,11 @@ ThemeData lightmode = ThemeData(
 
   colorScheme: ColorScheme(
     brightness: .light , 
-    primary: Colors.white ,
-    inversePrimary: Colors.black, 
-    onPrimary: const Color(0xFFFF0000), 
-    secondary: Color(0xFFDC3030), 
-    onSecondary: Color(0xFFE14141), 
+    primary: Colors.black ,
+    onPrimary: const Color(0xFFFF8888), 
+    inversePrimary: Colors.white, 
+    secondary: Colors.grey[600]!, 
+    onSecondary: Colors.grey[500]!, 
     error: Colors.red[800]!, 
     onError: Colors.red[800]!, 
     surface: const Color(0xFFD32F2F), 
