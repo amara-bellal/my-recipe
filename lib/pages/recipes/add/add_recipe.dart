@@ -7,6 +7,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recipe/components/add%20recipe/name_image.dart';
+import 'package:recipe/components/add%20recipe/steps.dart';
 import 'package:recipe/components/appbar.dart';
 import 'package:recipe/models/state%20management/recipe.dart';
 
@@ -28,9 +29,6 @@ class AddRecipePage extends StatefulWidget{
 
 
 
-
-
-
 class _AddRecipePage extends State<AddRecipePage>{
 
   Recipe? recipe ;
@@ -42,9 +40,10 @@ class _AddRecipePage extends State<AddRecipePage>{
 // 2nd Page
   List<String> supplies = [] ;
 
-
 // 3rd Page
-  List<String> steps = [] ;
+  List<String> steps = ["امزج الحليب مع بيضتين" , "اخلط المزيج" , "ضعها في الفرن" , "انتظر 5 دقائق"] ;
+  int? chosenField ;
+  final TextEditingController editingController = TextEditingController() ;
 
 
   PageController pageController = new PageController(initialPage: 0);
@@ -92,6 +91,53 @@ class _AddRecipePage extends State<AddRecipePage>{
     });
   }
 
+  void modifyStep(int index , String step){
+    setState(() {
+      steps[index] = step ;
+    });
+  }
+
+  void modifySupplie(int index , String supplie){
+    setState(() {
+      supplies[index] = supplie ;
+    });
+  }
+
+  void swapTwoSteps(int index1 , int index2 ){
+    setState(() {
+      final step1 = steps[index1];
+      final step2 = steps[index2];
+      steps[index1] = step2 ;
+      steps[index2] = step1 ;
+    });
+  }
+
+  void removeStep(int index){
+    setState(() {
+      steps.removeAt(index);
+    });
+  }
+
+  void removeSupplie(int index){
+    setState(() {
+      steps.removeAt(index);
+    });
+  }
+
+
+  void leaveEditMode(){
+    setState(() {
+      chosenField = null ;
+    });
+  }
+
+  void ChooseStepToEdit(int index){
+    setState(() {
+      editingController.text = steps[index];
+      chosenField = index ;
+    });
+  }
+
 
 
 
@@ -116,10 +162,12 @@ class _AddRecipePage extends State<AddRecipePage>{
 
         controller: pageController,
         scrollDirection: .horizontal,
-        allowImplicitScrolling: true,
-
+        
         children: [
           HeaderRecipe(bytesImage: bytesImage , nameController: nameController , setImage: takeImage ,) ,
+          AddStepsPage(steps: steps, modifyStep: modifyStep, swapSteps: swapTwoSteps, removeStep: removeStep,
+                        chosenField: chosenField, editStep: ChooseStepToEdit, leaveEditMode: leaveEditMode,
+                        EditStepController: editingController, )
         ],
       ),
 
@@ -134,7 +182,7 @@ class _AddRecipePage extends State<AddRecipePage>{
               opacity:  (_page != 0)? 1 : 0 ,
               child: FloatingActionButton(
                 onPressed: (){
-                  pageController.previousPage(duration: Duration(milliseconds: 500), curve: Curves.bounceOut);
+                  pageController.previousPage(duration: Duration(milliseconds: 350), curve: Curves.easeOut);
                 } ,
                 child: Icon(Icons.arrow_back , color: Theme.of(context).primaryColor),
                 
@@ -142,7 +190,7 @@ class _AddRecipePage extends State<AddRecipePage>{
             )
             ,
             FloatingActionButton(
-              onPressed: null,
+              onPressed: (){},
               child: Icon(Icons.save  , color: Theme.of(context).primaryColor,),
             )
             ,
@@ -150,7 +198,7 @@ class _AddRecipePage extends State<AddRecipePage>{
               opacity: (_page != 2)? 1 : 0 ,
               child: FloatingActionButton(
               onPressed: (){
-                pageController.nextPage(duration: Duration(milliseconds: 500), curve: Curves.bounceOut);
+                pageController.nextPage(duration: Duration(milliseconds: 350), curve: Curves.easeOut);
               } ,
               child: Icon(Icons.arrow_forward , color: Theme.of(context).primaryColor,),
               )
