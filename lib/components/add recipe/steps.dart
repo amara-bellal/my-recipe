@@ -12,14 +12,13 @@ class AddStepsPage extends StatelessWidget{
   final Function(int , int) swapSteps ; 
   final Function(int ) removeStep ; 
   final Function(int) editStep ;
-  final Function() leaveEditMode ;
 
-  final TextEditingController EditStepController ;
+  final TextEditingController editStepController ;
 
   const AddStepsPage({super.key , required this.steps , this.chosenField , 
                       required this.modifyStep , required this.swapSteps ,
                       required this.removeStep , required this.editStep ,
-                      required this.leaveEditMode , required this.EditStepController ,
+                      required this.editStepController ,
 
                       });
 
@@ -27,18 +26,30 @@ class AddStepsPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-
+  
     return Padding(
       padding: EdgeInsets.all(15.0),
       child: Column(
         crossAxisAlignment: .end,
         children: [
-            Text("خطوات الوصفة" , style: TextStyle(color: Theme.of(context).colorScheme.primary , fontSize: 20 ), ) 
+            Row(
+              mainAxisAlignment: .spaceBetween,
+              textDirection: .rtl,
+              children: [
+                Text("خطوات الوصفة" , style: TextStyle(color: Theme.of(context).colorScheme.primary , fontSize: 20 ), ),
+                IconButton(
+                  onPressed: (chosenField != null)? null : (){editStep(steps.length);}, 
+                  color: Theme.of(context).colorScheme.surface,
+                  icon: Icon(Icons.add , color: Theme.of(context).colorScheme.primary, ),
+                )
+              ],
+            ) 
             ,
               SizedBox(height: 25,)
             ,
             Expanded(
               child: ListView.separated(
+                clipBehavior: .none,
                 separatorBuilder: (context , index) => SizedBox(height: 25,),
                 itemCount: steps.length ,
                 itemBuilder: (context , index){
@@ -51,7 +62,7 @@ class AddStepsPage extends StatelessWidget{
                             
                         
                             Container(
-                                padding: EdgeInsets.only(top : 40 , left: 15 , right: 20 , bottom: 5),
+                                padding: EdgeInsets.only(top : 40 , left: 15 , right: 15 , bottom: 5),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadiusGeometry.circular(20) ,
                                   color: Theme.of(context).colorScheme.inversePrimary , 
@@ -71,12 +82,12 @@ class AddStepsPage extends StatelessWidget{
                                   children: [
                                     (chosenField != index)?
                                     Text(step , style: TextStyle(color: (chosenField == null)? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSecondary, 
-                                                fontSize: 18),
+                                                fontSize: 18 ,), 
+                                                textDirection: .rtl,
                                                 ) 
                                     :
                                     TextField(
-                                      controller: EditStepController,
-                                      onChanged: (value){modifyStep(index , value );},
+                                      controller: editStepController,
                                       cursorColor: Theme.of(context).colorScheme.surface,
                                       cursorErrorColor: Theme.of(context).colorScheme.surface,
                                       textDirection: .rtl,
@@ -125,9 +136,18 @@ class AddStepsPage extends StatelessWidget{
                         
                                       children: [
                                         IconButton(
-                                          onPressed: (){leaveEditMode();}, 
+                                          onPressed: (){
+                                            if(editStepController.text == "") modifyStep(index , steps[index]);
+                                            else modifyStep(index , editStepController.text);
+                                          }, 
                                           icon: Icon(Icons.save) ,
                                         ),
+
+                                        IconButton(
+                                          onPressed: (){
+                                            modifyStep(index , steps[index]);
+                                          }, 
+                                          icon: Icon(Icons.cancel))
                                       ],
                                     )
                                   ],

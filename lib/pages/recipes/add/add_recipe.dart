@@ -94,12 +94,15 @@ class _AddRecipePage extends State<AddRecipePage>{
   void modifyStep(int index , String step){
     setState(() {
       steps[index] = step ;
+      if(step == "") steps.removeAt(index);
+      chosenField = null ;
     });
   }
 
   void modifySupplie(int index , String supplie){
     setState(() {
       supplies[index] = supplie ;
+      chosenField = null ;
     });
   }
 
@@ -125,14 +128,10 @@ class _AddRecipePage extends State<AddRecipePage>{
   }
 
 
-  void leaveEditMode(){
-    setState(() {
-      chosenField = null ;
-    });
-  }
 
   void ChooseStepToEdit(int index){
     setState(() {
+      if(index >= steps.length) steps.add("");
       editingController.text = steps[index];
       chosenField = index ;
     });
@@ -166,8 +165,7 @@ class _AddRecipePage extends State<AddRecipePage>{
         children: [
           HeaderRecipe(bytesImage: bytesImage , nameController: nameController , setImage: takeImage ,) ,
           AddStepsPage(steps: steps, modifyStep: modifyStep, swapSteps: swapTwoSteps, removeStep: removeStep,
-                        chosenField: chosenField, editStep: ChooseStepToEdit, leaveEditMode: leaveEditMode,
-                        EditStepController: editingController, )
+                        chosenField: chosenField, editStep: ChooseStepToEdit, editStepController: editingController, )
         ],
       ),
 
