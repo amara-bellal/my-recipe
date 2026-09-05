@@ -14,7 +14,7 @@ class Nothing extends StatelessWidget{
   Widget build(BuildContext context) {
     
     return Center(
-      child: Text(text),
+      child: Text(text , style: TextStyle(color: Theme.of(context).colorScheme.surface , fontSize: 20),),
     );
     
   }

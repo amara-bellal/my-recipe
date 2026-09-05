@@ -32,7 +32,7 @@ class ListRecipes extends StatelessWidget{
             print("$state in blocbuilder");
             if(state == null) return LoadingCircle();
             
-            if(state.length == 0) return Nothing(text: "لا يوجد اي وصفة");
+            if(state.length == 0) return Nothing(text: "لا توجد اي وصفة");
             
             return ListView.builder(
               itemCount: state.length ,

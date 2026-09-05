@@ -11,6 +11,62 @@ import 'package:recipe/components/add%20recipe/steps.dart';
 import 'package:recipe/components/appbar.dart';
 import 'package:recipe/models/state%20management/recipe.dart';
 
+
+
+
+
+
+class RemoveConfirmationWidget extends StatelessWidget{
+
+  final Function() remove ;
+
+  const RemoveConfirmationWidget({super.key , required this.remove});
+
+
+  @override
+  Widget build(BuildContext context) {
+    
+    return AlertDialog(
+      alignment: .center,
+      actionsPadding: EdgeInsets.all(15),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      title: Text("تأكيد !" , style: TextStyle(color: Theme.of(context).primaryColor , fontWeight: .bold), textDirection: .rtl,),
+      content: Text("هل أنت متأكد من أنك تريد حذفها" , style: TextStyle(color: Theme.of(context).primaryColor), textDirection: .rtl,),
+      actionsAlignment: .start,
+      actions: [
+        MaterialButton(
+          color: Theme.of(context).colorScheme.onSurface,
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          child: Text( "إلغاء" , style: TextStyle(color: Theme.of(context).primaryColor),),
+        ),
+
+        MaterialButton(
+          color: Theme.of(context).colorScheme.onSurface,
+          onPressed: (){
+            Navigator.pop(context);
+            remove();
+          },
+          child: Text( "تأكيد" , style: TextStyle(color: Theme.of(context).primaryColor),),
+        ),
+
+      ],
+    );
+    
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
 class AddRecipePage extends StatefulWidget{
 
   Recipe? recipe ;
@@ -41,13 +97,14 @@ class _AddRecipePage extends State<AddRecipePage>{
   List<String> supplies = [] ;
 
 // 3rd Page
-  List<String> steps = ["امزج الحليب مع بيضتين" , "اخلط المزيج" , "ضعها في الفرن" , "انتظر 5 دقائق"] ;
+  List<String> steps = ["ضع كأسين من الحليب","اضف كأسا من الطحين","احضر بيضتين","احضر الخلاط", "امزج الحليب مع بيضتين" , "اخلط المزيج" , "ضعها في الفرن" , "انتظر 5 دقائق"] ;
   int? chosenField ;
   final TextEditingController editingController = TextEditingController() ;
 
 
-  PageController pageController = new PageController(initialPage: 0);
+  PageController pageController = new PageController(initialPage: 0 );
   int _page = 0;
+  final FocusNode focusnode = new FocusNode();
 
   _AddRecipePage({this.recipe});
 
@@ -127,6 +184,13 @@ class _AddRecipePage extends State<AddRecipePage>{
     });
   }
 
+  void showAlertBoxToRemove(int index , Function(int) remove){
+    showDialog(
+      context: context, 
+      builder: (context) => RemoveConfirmationWidget(remove: () => remove(index)),
+    );
+  }
+
 
 
   void ChooseStepToEdit(int index){
@@ -134,6 +198,7 @@ class _AddRecipePage extends State<AddRecipePage>{
       if(index >= steps.length) steps.add("");
       editingController.text = steps[index];
       chosenField = index ;
+      focusnode.requestFocus();
     });
   }
 
@@ -163,50 +228,57 @@ class _AddRecipePage extends State<AddRecipePage>{
         scrollDirection: .horizontal,
         
         children: [
-          HeaderRecipe(bytesImage: bytesImage , nameController: nameController , setImage: takeImage ,) ,
-          AddStepsPage(steps: steps, modifyStep: modifyStep, swapSteps: swapTwoSteps, removeStep: removeStep,
-                        chosenField: chosenField, editStep: ChooseStepToEdit, editStepController: editingController, )
+          HeaderRecipe(bytesImage: bytesImage , nameController: nameController , setImage: takeImage ,) 
+          ,
+          AddStepsPage(steps: steps, modifyStep: modifyStep, swapSteps: swapTwoSteps, removeStep: (index) => showAlertBoxToRemove(index, removeStep) ,
+                        chosenField: chosenField, editStep: ChooseStepToEdit, editStepController: editingController,
+                        focusnode: focusnode, )
+          ,
+
         ],
       ),
 
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Row(
-          mainAxisAlignment: .spaceBetween,
-          crossAxisAlignment: .center,
-
-          children: [
-            Opacity( 
-              opacity:  (_page != 0)? 1 : 0 ,
-              child: FloatingActionButton(
+        child: Opacity(
+          opacity: (chosenField == null)? 1 : 0,
+          child: Row(
+            mainAxisAlignment: .spaceBetween,
+            crossAxisAlignment: .center,
+          
+            children: [
+              Opacity( 
+                opacity:  (_page != 0)? 1 : 0 ,
+                child: FloatingActionButton(
+                  onPressed: (){
+                    pageController.previousPage(duration: Duration(milliseconds: 350), curve: Curves.easeOut);
+                  } ,
+                  child: Icon(Icons.arrow_back , color: Theme.of(context).primaryColor),
+                  
+                )
+              )
+              ,
+              FloatingActionButton(
+                onPressed: (){},
+                child: Icon(Icons.save  , color: Theme.of(context).primaryColor,),
+              )
+              ,
+              Opacity(
+                opacity: (_page != 2)? 1 : 0 ,
+                child: FloatingActionButton(
                 onPressed: (){
-                  pageController.previousPage(duration: Duration(milliseconds: 350), curve: Curves.easeOut);
+                  pageController.nextPage(duration: Duration(milliseconds: 350), curve: Curves.easeOut);
                 } ,
-                child: Icon(Icons.arrow_back , color: Theme.of(context).primaryColor),
-                
+                child: Icon(Icons.arrow_forward , color: Theme.of(context).primaryColor,),
+                )
               )
-            )
-            ,
-            FloatingActionButton(
-              onPressed: (){},
-              child: Icon(Icons.save  , color: Theme.of(context).primaryColor,),
-            )
-            ,
-            Opacity(
-              opacity: (_page != 2)? 1 : 0 ,
-              child: FloatingActionButton(
-              onPressed: (){
-                pageController.nextPage(duration: Duration(milliseconds: 350), curve: Curves.easeOut);
-              } ,
-              child: Icon(Icons.arrow_forward , color: Theme.of(context).primaryColor,),
-              )
-            )
-          ],
+            ],
+          ),
         ),
       ),
 
       floatingActionButtonLocation: .centerFloat,
-      floatingActionButtonAnimator: .noAnimation,
+      resizeToAvoidBottomInset : true,
     );
     
   }
