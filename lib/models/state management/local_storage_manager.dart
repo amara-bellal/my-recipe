@@ -7,9 +7,8 @@ class HiveManager {
 
   Future<List<Recipe>> getRecipes() async{
     final box = await Hive.openBox("recipes");
-    final mapRecipes = box.get("recipes" , defaultValue: <Map<String ,dynamic>>[]) ;
-    print("$mapRecipes in get func");
-    final List<Recipe> recipes = mapRecipes.map<Recipe>( (e) => Recipe.fromMap(e)).toList();
+    final List mapRecipes = box.get("recipes" , defaultValue: <Map<String ,dynamic>>[]) ;
+    final List<Recipe> recipes = mapRecipes.map( (e) => Recipe.fromMap(Map<String,dynamic>.from(e))).toList();
     await box.close();
     return recipes ;
   }

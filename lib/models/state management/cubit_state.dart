@@ -25,12 +25,12 @@ class RecipeStateBloc extends Cubit<List<Recipe>?>{
   }
 
   Future<void> addNewRecipe(Recipe recipe) async{
-    final newListRecipes = [...(state!) , recipe] ;
+    final newListRecipes = (state == null)? [recipe] : [...(state!) , recipe] ;
     await update(newListRecipes);
   }
 
-  Future<void> update(List<Recipe> recipes) async{
-     await hive.updateRecipes(recipes);
+  Future<void> update(List<Recipe>? recipes) async{
+     await hive.updateRecipes(recipes ?? state ?? []);
      emit(recipes);
   }
 

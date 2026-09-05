@@ -13,6 +13,7 @@ class AddStepsPage extends StatelessWidget{
   final Function(int , int) swapSteps ; 
   final Function(int ) removeStep ; 
   final Function(int) editStep ;
+  final Function(int) addStepBetweenTwoSteps ;
   final FocusNode focusnode ;
 
   final TextEditingController editStepController ;
@@ -23,8 +24,8 @@ class AddStepsPage extends StatelessWidget{
   AddStepsPage({super.key , required this.steps , this.chosenField , 
                       required this.modifyStep , required this.swapSteps ,
                       required this.removeStep , required this.editStep ,
-                      required this.editStepController , required this.focusnode
-
+                      required this.editStepController , required this.focusnode,
+                      required this.addStepBetweenTwoSteps
                       });
 
 
@@ -43,14 +44,15 @@ class AddStepsPage extends StatelessWidget{
                 textDirection: .rtl,
                 children: [
                   Text("خطوات الوصفة" , style: TextStyle(color: Theme.of(context).colorScheme.primary , fontSize: 20 ), ),
-                  IconButton(
-                    onPressed: (chosenField != null)? null : (){
+                  MaterialButton(
+                    onPressed:(chosenField == steps.length - 1 || chosenField == null)?(){
                         if(!steps.isEmpty) scrollController.animateTo(scrollController.position.maxScrollExtent , duration: Duration(milliseconds: 400) , curve: Curves.easeOut);
-                        editStep(steps.length);
-                      }, 
-                    color: Theme.of(context).colorScheme.surface,
-                    disabledColor: Theme.of(context).colorScheme.secondary,
-                    icon: Icon(Icons.add , color: Theme.of(context).colorScheme.primary, ),
+                        if(chosenField == null) editStep(steps.length);
+                      } : null, 
+                    shape: CircleBorder(),
+                    color: Theme.of(context).colorScheme.onSurface,
+                    disabledColor: Theme.of(context).colorScheme.onSurface,
+                    child: Icon(Icons.add , color: Theme.of(context).primaryColor, ),
                   )
                 ],
               ),
@@ -64,14 +66,29 @@ class AddStepsPage extends StatelessWidget{
                     controller: scrollController,
                     padding: EdgeInsets.only(bottom: 150 , right: 15 , left: 15 , top: 15),
                     clipBehavior: .hardEdge,
-                    separatorBuilder: (context , index) => SizedBox(height: 25,),
+                    separatorBuilder: (context , index) => SizedBox(height: 5,),
                     itemCount: steps.length ,
                     itemBuilder: (context , index){
                       final step = steps[index];
                       
                         return Column(
+                          spacing: 5,
                           key: Key(steps[index]),
                           children: [
+                            
+                            MaterialButton(
+                                padding: EdgeInsets.all(5),
+                                shape: CircleBorder(),
+                                color: Theme.of(context).colorScheme.onSecondary,
+                                disabledColor: Theme.of(context).colorScheme.onSecondary.withAlpha(100),
+                                onPressed: (chosenField != null)? null : (){
+                                  addStepBetweenTwoSteps(index);
+                                },
+                                child: Icon(Icons.add , color: Theme.of(context).primaryColor,),
+                              )
+
+                            ,
+
                             Stack(
                               children: [
                                 

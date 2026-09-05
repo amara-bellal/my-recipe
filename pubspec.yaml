@@ -38,6 +38,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   image_picker: ^1.2.3
+  fluttertoast: ^10.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

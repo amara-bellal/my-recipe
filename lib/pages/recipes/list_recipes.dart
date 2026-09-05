@@ -9,11 +9,16 @@ import 'package:recipe/components/emptyPage.dart';
 import 'package:recipe/models/state%20management/cubit_state.dart';
 import 'package:recipe/models/state%20management/recipe.dart';
 
+
+
+
+
 class ListRecipes extends StatelessWidget{
 
    ListRecipes({super.key});
 
 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +43,7 @@ class ListRecipes extends StatelessWidget{
               itemCount: state.length ,
               itemBuilder: (context , index){
                 final recipe = state[index];
-                return Text("${recipe.steps}");
+                return Text("${recipe.name}");
               }
               );
           } 
