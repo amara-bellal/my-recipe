@@ -36,6 +36,15 @@ class _ListRecipes extends State<ListRecipes>{
 
 
   SortMode _sortmode = .FAVORABLE ;
+  bool _inverseSort = false ;
+
+  @override
+  void initState() {
+    setState(() {
+      
+    });
+    super.initState();
+  }
   
 
   @override
@@ -73,28 +82,69 @@ class _ListRecipes extends State<ListRecipes>{
               mainAxisAlignment: .spaceBetween,
               children: [
                 
-                Text(": ترتيب المكونات على حسب" , 
+                Text(": ترتيب الوصفات على حسب" , 
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary ,
-                    fontSize: 18,
+                    fontSize: 16,
+                    fontWeight: .bold
                   ),
                 ),
 
                 
-                DropdownButton<SortMode>(
-                  value: _sortmode,
-                  items: [
-                    DropdownMenuItem(child: Text("date") , value: .DATE,),
-                    DropdownMenuItem(child: Text("favorable") , value: .FAVORABLE,),
-                    DropdownMenuItem(child: Text("name") , value: .NAME,),
-                  ], 
-                  onChanged: (value){
-                    setState(() {
-                      if(value == null) return ;
-                      _sortmode = value ;
-                    });
-                  }
-                  )
+                Row(
+
+                  spacing: 5,
+                  children: [
+
+                     DropdownButton<bool>(
+                      underline: Opacity(opacity: 0),
+                      value: _inverseSort,
+                      alignment: .centerRight,
+                      dropdownColor: Theme.of(context).colorScheme.inversePrimary,
+                      borderRadius: BorderRadius.circular(10),
+                      focusColor: Theme.of(context).colorScheme.inverseSurface,
+                      style: TextStyle(color: Theme.of(context).colorScheme.primary , fontSize: 15 , fontWeight: .bold),
+                      icon: Icon(Icons.arrow_drop_down_rounded , color: Theme.of(context).colorScheme.primary,),
+                      iconDisabledColor: Theme.of(context).colorScheme.onSecondary,
+
+                      items: [
+                        DropdownMenuItem(child: Text("تصاعديا") , value: false ),
+                        DropdownMenuItem(child: Text("تنازليا") , value: true),
+                      ], 
+                      onChanged:(_sortmode == .FAVORABLE)? null: (value){
+                        setState(() {
+                          if(value == null) return ;
+                          _inverseSort = value ;
+                        });
+                      }
+                      ),
+
+
+                    DropdownButton<SortMode>(
+                      value: _sortmode,
+                      alignment: .centerRight,
+                      underline: Opacity(opacity: 0),
+                      dropdownColor: Theme.of(context).colorScheme.inversePrimary,
+                      borderRadius: BorderRadius.circular(10),
+                      style: TextStyle(color: Theme.of(context).colorScheme.primary , fontSize: 15 , fontWeight: .bold , fontFamily: "Rubic"),
+                      icon: Icon(Icons.arrow_drop_down_rounded , color: Theme.of(context).colorScheme.primary,),
+                      items: [
+                        DropdownMenuItem(child: Text("التاريخ") , value: .DATE),
+                        DropdownMenuItem(child: Text("المفضلة") , value: .FAVORABLE,),
+                        DropdownMenuItem(child: Text("الاسم") , value: .NAME,),
+                      ], 
+                      onChanged: (value){
+                        setState(() {
+                          if(value == null) return ;
+                          _sortmode = value ;
+                          if(value == .FAVORABLE) _inverseSort = false;
+                        });
+                      }
+                      ),
+
+                   
+                  ],
+                )
 
 
               ],
@@ -116,9 +166,11 @@ class _ListRecipes extends State<ListRecipes>{
                       case .NAME :
                         return r1.name.compareTo(r2.name);
                       case .DATE :
-                        return r2.dateCreated.compareTo(r1.dateCreated);
+                        return r1.dateCreated.compareTo(r2.dateCreated);
                     }
                   });
+
+                  if(_inverseSort) state = state.reversed.toList();
                   
                   return ListView.separated(
                     itemCount: state.length ,
@@ -129,7 +181,7 @@ class _ListRecipes extends State<ListRecipes>{
                     ),
             
                     itemBuilder: (context , index){
-                      final recipe = state[index];
+                      final recipe = state![index];
                       return RecipeCard(recipe: recipe);
                     }
                     );

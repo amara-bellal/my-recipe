@@ -7,6 +7,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe/components/LoadingCircle.dart';
 import 'package:recipe/models/state%20management/cubit_state.dart';
 import 'package:recipe/models/state%20management/recipe.dart';
+import 'package:recipe/pages/recipes/add/add_recipe.dart';
+import 'package:recipe/pages/recipes/recipe_information.dart';
+
+
+String toFixNumberLetters(int num , int length){
+  final String number = num.toString();
+  String result = "" ;
+  for(int i = 0 ; i < length - number.length ; i++){
+    result += "0";
+  }
+  result += number ;
+  return result ;
+}
+
+
 
 class RecipeCard extends StatelessWidget{
   
@@ -25,6 +40,9 @@ class RecipeCard extends StatelessWidget{
                 ),
               ];
 
+    final date = recipe.dateCreated ;
+    final String dateText = "${toFixNumberLetters(date.hour , 2)}:${toFixNumberLetters(date.minute , 2)}   ${toFixNumberLetters(date.day , 2)}-${toFixNumberLetters(date.month , 2)}-${toFixNumberLetters(date.year , 4)}";
+
     return Padding(
       key: Key(recipe.dateCreated.toString()),
       padding: EdgeInsets.all(15.0),
@@ -40,21 +58,75 @@ class RecipeCard extends StatelessWidget{
               color: Theme.of(context).colorScheme.inversePrimary ,
               boxShadow: shadowBox ,
             ),
-            child: Row(
-              textDirection: .rtl,
-              mainAxisAlignment: .spaceBetween,
+            child: Column(
+              crossAxisAlignment: .end,
+              spacing: 8,
               children: [
-                Text(recipe.name , style: TextStyle(color: Theme.of(context).colorScheme.primary , fontSize: 20),),
-                IconButton(
-                  onPressed: (){
-                    recipe.isFavorable = !recipe.isFavorable ;
-                    context.read<RecipeStateBloc>().updateState();
-                  }, 
-                  icon: Icon( (!recipe.isFavorable)? Icons.star_border_rounded : Icons.star_rounded ,
-                    color: Colors.amber[700],
-                    size: 30,
-                  )
-                ) ,
+                Row(
+                  mainAxisAlignment: .spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AddRecipePage(recipe: recipe,)));
+                          }, 
+                          icon: Icon(Icons.edit)),
+                        
+                        IconButton(
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeInformation(recipe: recipe,)));
+                          }, 
+                          icon: Icon(Icons.remove_red_eye)),
+                        
+                        
+
+                      ],
+                    )
+                    ,
+                    Text(dateText , style: TextStyle(color: Theme.of(context).colorScheme.secondary.withAlpha(200) , ),),
+                  ],
+                )
+                ,
+                
+                Text(recipe.name , style: TextStyle(color: Theme.of(context).colorScheme.primary , fontSize: 21 , fontWeight: .bold),),
+
+                
+                Row(
+                  textDirection: .rtl,
+                  mainAxisAlignment: .spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      child: ElevatedButton(
+                          onPressed: (){
+                            // track recipe
+                          } ,
+                          child: Row(
+
+                            textDirection: .rtl,
+                            spacing: 6,
+                            children: [
+                              Icon(Icons.checklist , color: Theme.of(context).primaryColor,),
+                              Text("تتبع الوصفة" , style: TextStyle(color: Theme.of(context).primaryColor , fontSize: 16),  )
+                            ],
+                          ),
+                        ),
+                    )
+                    ,
+                    IconButton(
+                      iconSize: 10,
+                      onPressed: (){
+                        recipe.isFavorable = !recipe.isFavorable ;
+                        context.read<RecipeStateBloc>().updateState();
+                      }, 
+                      icon: Icon( (!recipe.isFavorable)? Icons.star_border_rounded : Icons.star_rounded ,
+                        color: Colors.amber[700],
+                        size: 30,
+                      )
+                    ) ,
+                  ],
+                ),
               ],
             ),
           ),
@@ -70,7 +142,7 @@ class RecipeCard extends StatelessWidget{
             child: Image.memory(recipe.image ,
               fit: .fitHeight,
               frameBuilder: (context, child, frame, wasSynchronouslyLoaded){
-                if(frame == 0) return child ;
+                if(frame == 0 || wasSynchronouslyLoaded) return child ;
                 else return LoadingCircle();
               },
             ),

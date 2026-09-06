@@ -15,6 +15,7 @@ import 'package:recipe/components/appbar.dart';
 import 'package:recipe/models/exceptions/exceptions.dart';
 import 'package:recipe/models/state%20management/cubit_state.dart';
 import 'package:recipe/models/state%20management/recipe.dart';
+import 'package:recipe/pages/recipes/list_recipes.dart';
 
 
 
@@ -118,8 +119,8 @@ class _AddRecipePage extends State<AddRecipePage>{
   @override
   void initState() {
     if(recipe != null){
-      steps = recipe!.steps ;
-      supplies = recipe!.supplies ;
+      steps = [...recipe!.steps] ;
+      supplies = [...recipe!.supplies] ;
     }
     nameController.text = recipe?.name ?? "";
     bytesImage = recipe?.image ; 
@@ -268,7 +269,7 @@ class _AddRecipePage extends State<AddRecipePage>{
         recipe!.image = bytesImage! ;
         recipe!.supplies = [...supplies] ;
         recipe!.steps = [...steps] ;
-        context.read<RecipeStateBloc>().update(null);
+        await context.read<RecipeStateBloc>().updateState();
       }
 
 
@@ -279,8 +280,11 @@ class _AddRecipePage extends State<AddRecipePage>{
         gravity: .BOTTOM ,
         fontSize: 15 ,
       );
+      //if(recipe != null ) Navigator.pushReplacement(context , MaterialPageRoute(builder: (context) => ListRecipes()));
+     //else Navigator.pop(context);
 
-      Navigator.pop(context);
+     Navigator.pop(context);
+
 
     }catch(e){
 
