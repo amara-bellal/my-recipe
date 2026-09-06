@@ -109,7 +109,7 @@ class HeaderRecipe extends StatelessWidget{
                             clipBehavior: .none,
                             backgroundColor: Theme.of(context).colorScheme.surface,
                             onPressed: (){setImage(.camera);} ,  
-                            child: Icon(Icons.camera_enhance, color: Theme.of(context).primaryColor, size:30)
+                            child: Icon(Icons.photo_camera_rounded, color: Theme.of(context).primaryColor, size:30)
                             ),
                           
                           FloatingActionButton(

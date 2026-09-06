@@ -134,7 +134,7 @@ class _AddRecipePage extends State<AddRecipePage>{
   Future<void> takeImage(ImageSource source) async{
     
     ImagePicker picker = ImagePicker();
-    XFile? image = await picker.pickImage(source: source);
+    XFile? image = await picker.pickImage(source: source , preferredCameraDevice: .front);
     final _bytesImage = await  image?.readAsBytes();
         
 
@@ -233,12 +233,6 @@ class _AddRecipePage extends State<AddRecipePage>{
 
     final String name = nameController.text ;
 
-    print("name :  ${name}");
-    print("......");
-    print("steps :  $steps");
-    print("......");
-    print("supplies :  $supplies");
-
     try{
 
       if( name == "") throw MissingRecipeInformationsException(position: 0, message: "ضع اسم للوصفة");
@@ -301,7 +295,7 @@ class _AddRecipePage extends State<AddRecipePage>{
     }
 
 
-  }
+  } // save
 
 
 
@@ -311,10 +305,11 @@ class _AddRecipePage extends State<AddRecipePage>{
 
 
     return Scaffold(
+           
 
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
-      appBar: AppBarWidget(title: (recipe == null ? "وصفة جديدة" : "تعديل الوصفة"), context: context),
+      appBar: AppBarWidget(title: (recipe == null ? "وصفة جديدة" : "تعديل الوصفة"),  hasLeftIcon: true , context: context ),
 
       body: PageView(
         physics: (chosenField != null)? NeverScrollableScrollPhysics() : null,

@@ -6,7 +6,7 @@
 
 import 'dart:typed_data';
 
-class Recipe {
+class Recipe implements Comparable<Recipe> {
 
 
   String name;
@@ -92,6 +92,13 @@ class Recipe {
     supplies.removeAt(index);
   }
 
+
+  @override
+  int compareTo(Recipe recipe) {
+    if(recipe.isFavorable && !this.isFavorable) return 1;
+    if(!recipe.isFavorable && this.isFavorable) return -1;
+    return 0;
+  }
   
 
 }

@@ -19,6 +19,11 @@ class RecipeStateBloc extends Cubit<List<Recipe>?>{
     emit(null);
   }
 
+  void updateState() async{
+    await hive.updateRecipes(state!);
+    emit([...state!]);
+  }
+
   Future<void> getRecipes() async{
     final recipes = await hive.getRecipes() ;
     emit(recipes);
