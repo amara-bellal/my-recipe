@@ -9,6 +9,7 @@ import 'package:recipe/models/state%20management/cubit_state.dart';
 import 'package:recipe/models/state%20management/recipe.dart';
 import 'package:recipe/pages/recipes/add/add_recipe.dart';
 import 'package:recipe/pages/recipes/recipe_information.dart';
+import 'package:recipe/pages/recipes/track/track_recipe.dart';
 
 
 String toFixNumberLetters(int num , int length){
@@ -101,6 +102,7 @@ class RecipeCard extends StatelessWidget{
                       child: ElevatedButton(
                           onPressed: (){
                             // track recipe
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TrackRecipePage(recipe: recipe)));
                           } ,
                           child: Row(
 

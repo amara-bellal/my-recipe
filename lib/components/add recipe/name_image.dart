@@ -94,7 +94,7 @@ class HeaderRecipe extends StatelessWidget{
                           child: Icon(Icons.image , color: Theme.of(context).colorScheme.secondary, size: 100,),
                         ) :
                         Image.memory(bytesImage! , fit: BoxFit.fitHeight, frameBuilder: (context, child, frame, wasSynchronouslyLoaded){
-                          return (frame != 0 )? LoadingCircle() : child ;
+                          return (frame != 0 && !wasSynchronouslyLoaded)? LoadingCircle() : child ;
                         },) ,
                     ),
 
