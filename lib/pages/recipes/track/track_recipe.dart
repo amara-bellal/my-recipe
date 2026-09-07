@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipe/components/appbar.dart';
 import 'package:recipe/components/track%20recipe/definision.dart';
+import 'package:recipe/components/track%20recipe/track_steps.dart';
 import 'package:recipe/components/track%20recipe/track_supplies.dart';
 import 'package:recipe/models/state%20management/recipe.dart';
 
@@ -50,7 +51,8 @@ class _TrackRecipePage extends State<TrackRecipePage>{
         physics: NeverScrollableScrollPhysics(),
         children: [
           DefinisionRecipe(recipe: recipe ) ,
-          TrackSupplies(recipe: recipe, makeDone: setDone)
+          TrackSupplies(recipe: recipe, makeDone: setDone) ,
+          TrackSteps(recipe: recipe, makeDone: setDone) ,
         ],
       ),
 

@@ -53,55 +53,84 @@ class _TrackSupplies extends State<TrackSupplies>{
   @override
   Widget build(BuildContext context) {
     
-    return ListView.separated(
-        padding: EdgeInsets.all(16.0),
-        separatorBuilder: (context, index) => SizedBox(height: 15,),
-        itemCount: supplies.length,
-        itemBuilder: (context, index) => Container(
-          padding: EdgeInsets.symmetric( horizontal: 16.0 , vertical: 10.0),
+    return Column(
+      children: [
+        Container(
+          width: .infinity,
+          alignment: .center,
+          padding: EdgeInsets.symmetric(vertical: 25.0),
           decoration: BoxDecoration(
-            borderRadius: BorderRadiusGeometry.circular(20) ,
-            color: Theme.of(context).colorScheme.inversePrimary , 
+            color: Theme.of(context).colorScheme.inverseSurface ,
             boxShadow: [
               BoxShadow(
-                offset: Offset(0, 7) ,
-                blurRadius: 10.0 ,
-                color: Colors.black.withAlpha(200),
-                spreadRadius: 0.5
+                offset: Offset(0, 5) ,
+                color: Colors.black.withAlpha(100),
+                blurRadius: 5.0 ,
               )
-            ],
+            ]
           ),
 
-          child: Row(
-            textDirection: .rtl,
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              Expanded(
-                child: Text(supplies[index].tracked , style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary ,
-                  fontSize: 18 ,
-                  decoration: (supplies[index].done)? .lineThrough : null ,
-                  decorationColor: Theme.of(context).colorScheme.surface ,
-                  decorationThickness: 2 ,
-                  
-                  ),
-                  textAlign: .end,
+          child: Text("جمع مكونات الوصفة" , style: TextStyle(
+              color: Theme.of(context).colorScheme.primary ,
+              fontSize: 25 ,
+              fontWeight: .bold
                 ),
-              ) ,
-
-              Checkbox(
-                activeColor: Theme.of(context).colorScheme.surface,
-                checkColor: Theme.of(context).primaryColor,
-                value: supplies[index].done, 
-                onChanged: (value){
-                  if(value == null)  return ;
-                  makeDoneSupplie(index, value);
-                })
-            ],
+               ),
+        )
+        ,
+        Expanded(
+          child: ListView.separated(
+              padding: EdgeInsets.all(16.0),
+              separatorBuilder: (context, index) => SizedBox(height: 15,),
+              itemCount: supplies.length,
+              itemBuilder: (context, index) => Container(
+                padding: EdgeInsets.symmetric( horizontal: 16.0 , vertical: 10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadiusGeometry.circular(20) ,
+                  color: Theme.of(context).colorScheme.inversePrimary , 
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0, 7) ,
+                      blurRadius: 10.0 ,
+                      color: Colors.black.withAlpha(200),
+                      spreadRadius: 0.5
+                    )
+                  ],
+                ),
+          
+                child: Row(
+                  textDirection: .rtl,
+                  mainAxisAlignment: .spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(supplies[index].tracked , style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary ,
+                        fontSize: 18 ,
+                        decoration: (supplies[index].done)? .lineThrough : null ,
+                        decorationColor: Theme.of(context).colorScheme.surface ,
+                        decorationThickness: 2 ,
+                        
+                        ),
+                        textAlign: .end,
+                      ),
+                    ) ,
+          
+                    Checkbox(
+                      activeColor: Theme.of(context).colorScheme.surface,
+                      checkColor: Theme.of(context).primaryColor,
+                      value: supplies[index].done, 
+                      onChanged: (value){
+                        if(value == null)  return ;
+                        makeDoneSupplie(index, value);
+                      })
+                  ],
+                ),
+          
+              ),
+                  
           ),
-
         ),
-            
+      ],
     );
     
   }
