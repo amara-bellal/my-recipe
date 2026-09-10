@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe/models/routes.dart';
 import 'package:recipe/models/state%20management/cubit_state.dart';
 import 'package:recipe/pages/home.dart';
@@ -11,13 +12,16 @@ import 'package:recipe/styles/themes.dart';
 
 void main() async {
 
-  Hive.initFlutter();
+  await Hive.initFlutter();
   
   
   runApp(
     BlocProvider<RecipeStateBloc>(
       create: (context) => RecipeStateBloc() ,
-      child: const MyApp(),
+      child: ChangeNotifierProvider(
+          create: (_) => ThemeProvider(),
+          child: const MyApp(),
+        )
     )
   );
 }
@@ -38,7 +42,7 @@ class MyApp extends StatelessWidget {
 
       title: 'my recipes',
       
-      theme: lightmode,
+      theme: context.watch<ThemeProvider>().theme ,
       
       home: HomePage(),
       
@@ -47,8 +51,6 @@ class MyApp extends StatelessWidget {
         RoutePages.SETTINGS.path      :   (context) => HomePage() ,
         RoutePages.SHOW_RECIPES.path  :   (context) => ListRecipes() ,
         RoutePages.ADD_RECIPE.path    :   (context) => AddRecipePage() ,
-        RoutePages.ADD_SUPPLIES.path  :   (context) => HomePage() ,
-        RoutePages.ADD_STEPS.path     :   (context) => HomePage() ,
       },
     );
 

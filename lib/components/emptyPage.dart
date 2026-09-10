@@ -14,7 +14,15 @@ class Nothing extends StatelessWidget{
   Widget build(BuildContext context) {
     
     return Center(
-      child: Text(text , style: TextStyle(color: Theme.of(context).colorScheme.surface , fontSize: 20),),
+      child: Column(
+        mainAxisAlignment: .center,
+        spacing: 30,
+        children: [
+          Image.asset("assets/images/static/emptyBox.png")
+          ,
+          Text(text , style: TextStyle(color: Theme.of(context).colorScheme.secondary , fontSize: 20),),
+        ],
+      ),
     );
     
   }

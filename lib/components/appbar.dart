@@ -21,6 +21,7 @@ PreferredSizeWidget AppBarWidget({
                 }){
 
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Theme.of(context).colorScheme.surface,
       elevation: 6.0,
       shadowColor: Colors.black,
@@ -35,12 +36,16 @@ PreferredSizeWidget AppBarWidget({
       actions: 
         (!hasRightIcon)? null :
         [
-          IconButton(
-            onPressed: onRightIconPressed ?? (){
-              Navigator.pushNamed(context, RoutePages.SETTINGS.path );
-            }, 
-            icon: Icon(rightIcon , color: Theme.of(context).primaryColor),
-            hoverColor: Colors.blue,
+          Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: onRightIconPressed ?? (){
+                  Scaffold.of(context).openDrawer();
+                }, 
+                icon: Icon(rightIcon , color: Theme.of(context).primaryColor),
+                hoverColor: Colors.blue,
+              );
+            }
           ) , 
         ],
 

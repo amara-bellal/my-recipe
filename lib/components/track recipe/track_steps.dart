@@ -2,8 +2,10 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:recipe/models/Tracker.dart';
 import 'package:recipe/models/state%20management/recipe.dart';
+
+
+
 
 class TrackSteps extends StatefulWidget{
 
@@ -26,12 +28,12 @@ class _TrackSteps extends State<TrackSteps>{
 
 
   final void Function(bool) makeDone;
-  late List<Tracker> steps ;
+  late List<String> steps ;
 
   int _currentStep = 0 ;
 
   _TrackSteps({required Recipe recipe , required this.makeDone}){
-    steps = recipe.steps.map((e) => Tracker(tracked: e)).toList();
+    steps = recipe.steps;
   }
 
 
@@ -67,8 +69,9 @@ class _TrackSteps extends State<TrackSteps>{
             SizedBox(height: 40,)
             ,
             
-            Opacity(
+            AnimatedOpacity(
               opacity: (_currentStep == steps.length)? 0 : 1 ,
+              duration: Duration(milliseconds: 200),
               child: Container(
                 width: 75,
                 height: 75,
@@ -84,7 +87,7 @@ class _TrackSteps extends State<TrackSteps>{
                   ]
                 ),
                 alignment: .center,
-                child: Text((_currentStep + 1).toString() , style: TextStyle(
+                child: (_currentStep == steps.length)? null : Text((_currentStep + 1).toString() , style: TextStyle(
                   color: Theme.of(context).primaryColor ,
                   fontWeight: .bold ,
                   fontSize: 30 ,
@@ -140,7 +143,7 @@ class _TrackSteps extends State<TrackSteps>{
                                 ),
                               ] ,
                             ),
-                            child: Text(steps[index].tracked , textDirection: .rtl , style: TextStyle(
+                            child: Text(steps[index] , textDirection: .rtl , style: TextStyle(
                               color: Theme.of(context).colorScheme.primary ,
                               fontSize: 19
                             ),),

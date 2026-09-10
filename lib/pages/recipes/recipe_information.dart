@@ -3,8 +3,11 @@
 
 import 'package:recipe/components/LoadingCircle.dart';
 import 'package:recipe/components/appbar.dart';
+import 'package:recipe/components/setting/drawer_setting.dart';
 import "package:recipe/models/state management/recipe.dart";
 import 'package:flutter/material.dart';
+import 'package:recipe/pages/recipes/add/add_recipe.dart';
+import 'package:recipe/pages/recipes/track/track_recipe.dart';
 
 class RecipeInformation extends StatelessWidget {
 
@@ -59,6 +62,8 @@ class RecipeInformation extends StatelessWidget {
         title: "معلومات الوصفة", 
         context: context
       ),
+
+      drawer: SettingsDrawer(),
 
       body: ListView(
         scrollDirection: .vertical,
@@ -161,6 +166,66 @@ class RecipeInformation extends StatelessWidget {
 
         ],
       ),
+
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: .center,
+          spacing: 15,
+          children: [
+             Expanded(
+               child: ElevatedButton(
+                
+                    style: ButtonStyle(
+                      elevation: .all(5.0)
+                    ),
+                    onPressed: (){
+                      // track recipe
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TrackRecipePage(recipe: recipe)));
+                    } ,
+                    child: Row(
+                      mainAxisAlignment: .center,
+                      textDirection: .rtl,
+                      spacing: 6,
+                      children: [
+                        Icon(Icons.checklist , color: Theme.of(context).primaryColor,),
+                        Text("تتبع الوصفة" , style: TextStyle(color: Theme.of(context).primaryColor , fontSize: 16),  )
+                      ],
+                    ),
+                  ),
+             )
+            
+            ,
+        
+            
+              Expanded(
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                      elevation: .all(5.0)
+                    ),
+                    onPressed: (){
+                      // track recipe
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddRecipePage(recipe: recipe)));
+                    } ,
+                    child: Row(
+                      mainAxisAlignment: .center,
+                      textDirection: .rtl,
+                      spacing: 6,
+                      children: [
+                        Icon(Icons.edit , color: Theme.of(context).primaryColor,),
+                        Text("تعديل الوصفة" , style: TextStyle(color: Theme.of(context).primaryColor , fontSize: 16),  )
+                      ],
+                    ),
+                  ),
+              ),
+            
+            
+          ],
+        ),
+      ),
+
+      floatingActionButtonLocation: .centerFloat,
+
     );
     
   }

@@ -12,7 +12,9 @@ import 'package:recipe/components/add%20recipe/name_image.dart';
 import 'package:recipe/components/add%20recipe/steps.dart';
 import 'package:recipe/components/add%20recipe/supplies.dart';
 import 'package:recipe/components/appbar.dart';
+import 'package:recipe/components/setting/drawer_setting.dart';
 import 'package:recipe/models/exceptions/exceptions.dart';
+import 'package:recipe/models/pop_confirm.dart';
 import 'package:recipe/models/state%20management/cubit_state.dart';
 import 'package:recipe/models/state%20management/recipe.dart';
 import 'package:recipe/pages/recipes/list_recipes.dart';
@@ -36,6 +38,7 @@ class RemoveConfirmationWidget extends StatelessWidget{
       alignment: .center,
       actionsPadding: EdgeInsets.all(15),
       backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: RoundedRectangleBorder(borderRadius: .circular(10)),
       title: Text("تأكيد !" , style: TextStyle(color: Theme.of(context).primaryColor , fontWeight: .bold), textDirection: .rtl,),
       content: Text("هل أنت متأكد من أنك تريد حذفها" , style: TextStyle(color: Theme.of(context).primaryColor), textDirection: .rtl,),
       actionsAlignment: .start,
@@ -302,93 +305,112 @@ class _AddRecipePage extends State<AddRecipePage>{
   } // save
 
 
+  void confirmPop(BuildContext context ){
+      showDialog(
+        context: context, 
+        builder: (context) => AlertPop(message: (recipe == null)? "متأكد من أنك تريد الخروج ، ستفقد معلومات الوصفة ولن يتم حفظها" : "متأكد من أنك تريد الخروج ، ستفقد التعديلات على الوصفة ولن يتم حفظها")
+      );
+  }
 
 
   Widget build(BuildContext context) {
-    
 
 
-    return Scaffold(
-           
 
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (value , obj){
+        if(value) {
+          print("it's true --add");
+          return;
+        }
+        confirmPop(context);
+      },
 
-      appBar: AppBarWidget(title: (recipe == null ? "وصفة جديدة" : "تعديل الوصفة"),  hasLeftIcon: true , context: context ),
-
-      body: PageView(
-        physics: (chosenField != null)? NeverScrollableScrollPhysics() : null,
-
-        onPageChanged: (value){
-          setState(() {
-            
-              _page = value ;
-            
-            }
-          );
-        },
-
-        
-
-        controller: pageController,
-        scrollDirection: .horizontal,
-
-        children: [
-          HeaderRecipe(bytesImage: bytesImage , nameController: nameController , setImage: takeImage ,) 
-          ,
-
-          AddSuppliesPage(supplies: supplies, modifySupplie: modifySupplie, removeSupplie: (index) => showAlertBoxToRemove(index, removeSupplie) ,
-                        chosenField: chosenField, editSupplie: ChooseSupplieToEdit, editSupplieController: editingController,
-                        focusnode: focusnode, )
-          ,
-
-
-          AddStepsPage(steps: steps, modifyStep: modifyStep, swapSteps: swapTwoSteps, removeStep: (index) => showAlertBoxToRemove(index, removeStep) ,
-                        chosenField: chosenField, editStep: ChooseStepToEdit, editStepController: editingController,
-                        focusnode: focusnode, addStepBetweenTwoSteps: addStepBetweenTwoSteps, )
-          ,
-
-        ],
-      ),
-
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: (chosenField != null)? null :  Row(
-            mainAxisAlignment: .spaceBetween,
-            crossAxisAlignment: .center,
-          
-            children: [
-              Opacity( 
-                opacity:  (_page != 0)? 1 : 0 ,
-                child: FloatingActionButton(
-                  onPressed: (_page == 0)? null : (){
-                    pageController.previousPage(duration: Duration(milliseconds: 350), curve: Curves.easeOut);
-                  } ,
-                  child: Icon(Icons.arrow_back , color: Theme.of(context).primaryColor),
-                  
-                )
-              )
-              ,
-              FloatingActionButton(
-                onPressed: save,
-                child: Icon(Icons.save  , color: Theme.of(context).primaryColor,),
-              )
-              ,
-              Opacity(
-                opacity: (_page != 2)? 1 : 0 ,
-                child: FloatingActionButton(
-                onPressed:(_page == 2)? null : (){
-                  pageController.nextPage(duration: Duration(milliseconds: 350), curve: Curves.easeOut);
-                } ,
-                child: Icon(Icons.arrow_forward , color: Theme.of(context).primaryColor,),
-                )
-              )
-            ],
-          ),
-        ),
-
-      floatingActionButtonLocation: .centerFloat,
-      resizeToAvoidBottomInset : true,
+      child: Scaffold(
+             
       
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      
+        appBar: AppBarWidget(title: (recipe == null ? "وصفة جديدة" : "تعديل الوصفة"),  hasLeftIcon: true , context: context , onLeftIconPressed: () => confirmPop(context), ),
+      
+        drawer: SettingsDrawer(),
+
+        body: PageView(
+          physics: (chosenField != null)? NeverScrollableScrollPhysics() : null,
+      
+          onPageChanged: (value){
+            setState(() {
+              
+                _page = value ;
+              
+              }
+            );
+          },
+      
+          
+      
+          controller: pageController,
+          scrollDirection: .horizontal,
+      
+          children: [
+            HeaderRecipe(bytesImage: bytesImage , nameController: nameController , setImage: takeImage ,) 
+            ,
+      
+            AddSuppliesPage(supplies: supplies, modifySupplie: modifySupplie, removeSupplie: (index) => showAlertBoxToRemove(index, removeSupplie) ,
+                          chosenField: chosenField, editSupplie: ChooseSupplieToEdit, editSupplieController: editingController,
+                          focusnode: focusnode, )
+            ,
+      
+      
+            AddStepsPage(steps: steps, modifyStep: modifyStep, swapSteps: swapTwoSteps, removeStep: (index) => showAlertBoxToRemove(index, removeStep) ,
+                          chosenField: chosenField, editStep: ChooseStepToEdit, editStepController: editingController,
+                          focusnode: focusnode, addStepBetweenTwoSteps: addStepBetweenTwoSteps, )
+            ,
+      
+          ],
+        ),
+      
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: (chosenField != null)? null :  Row(
+              mainAxisAlignment: .spaceBetween,
+              crossAxisAlignment: .center,
+            
+              children: [
+                Opacity( 
+                  opacity:  (_page != 0)? 1 : 0 ,
+                  child: FloatingActionButton(
+                    onPressed: (_page == 0)? null : (){
+                      pageController.previousPage(duration: Duration(milliseconds: 350), curve: Curves.easeOut);
+                    } ,
+                    child: Icon(Icons.arrow_back , color: Theme.of(context).primaryColor),
+                    
+                  )
+                )
+                ,
+                FloatingActionButton(
+                  onPressed: save,
+                  child: Icon(Icons.save  , color: Theme.of(context).primaryColor,),
+                )
+                ,
+                Opacity(
+                  opacity: (_page != 2)? 1 : 0 ,
+                  child: FloatingActionButton(
+                  onPressed:(_page == 2)? null : (){
+                    pageController.nextPage(duration: Duration(milliseconds: 350), curve: Curves.easeOut);
+                  } ,
+                  child: Icon(Icons.arrow_forward , color: Theme.of(context).primaryColor,),
+                  )
+                )
+              ],
+            ),
+          ),
+      
+        floatingActionButtonLocation: .centerFloat,
+        resizeToAvoidBottomInset : true,
+        
+      ),
     );
     
   }

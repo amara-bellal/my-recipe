@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipe/components/appbar.dart';
 import 'package:recipe/components/navigate_button.dart';
+import 'package:recipe/components/setting/drawer_setting.dart';
 import 'package:recipe/models/routes.dart';
 
 class HomePage extends StatelessWidget{
@@ -21,7 +22,12 @@ class HomePage extends StatelessWidget{
         context: context,
         title: "الصفحة الرئيسية" ,
         hasRightIcon: true ,
+        hasLeftIcon: false ,
       ),
+
+      drawer: SettingsDrawer(),
+
+      
 
 
       body: Padding(

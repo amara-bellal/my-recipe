@@ -7,6 +7,7 @@ import 'package:recipe/components/LoadingCircle.dart';
 import 'package:recipe/components/RecipeCard.dart';
 import 'package:recipe/components/appbar.dart';
 import 'package:recipe/components/emptyPage.dart';
+import 'package:recipe/components/setting/drawer_setting.dart';
 import 'package:recipe/models/state%20management/cubit_state.dart';
 import 'package:recipe/models/state%20management/recipe.dart';
 
@@ -58,6 +59,8 @@ class _ListRecipes extends State<ListRecipes>{
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       
       appBar: AppBarWidget(title: "وصفاتي", context: context , hasLeftIcon: true ),
+
+      drawer: SettingsDrawer(),
       
       body: Column(
         children: [

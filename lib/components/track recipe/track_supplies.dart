@@ -80,7 +80,7 @@ class _TrackSupplies extends State<TrackSupplies>{
         ,
         Expanded(
           child: ListView.separated(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.only(left: 16.0 , top: 16.0 , right: 16.0 , bottom: 100),
               separatorBuilder: (context, index) => SizedBox(height: 15,),
               itemCount: supplies.length,
               itemBuilder: (context, index) => Container(
