@@ -48,7 +48,6 @@ class MyApp extends StatelessWidget {
       
       routes: {
         RoutePages.HOME.path          :   (context) => HomePage() ,
-        RoutePages.SETTINGS.path      :   (context) => HomePage() ,
         RoutePages.SHOW_RECIPES.path  :   (context) => ListRecipes() ,
         RoutePages.ADD_RECIPE.path    :   (context) => AddRecipePage() ,
       },
